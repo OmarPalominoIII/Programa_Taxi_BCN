@@ -1,4 +1,4 @@
-package com.taxibcn.logic.model;
+package project.models;
 
 public class Position {
 

@@ -1,8 +1,5 @@
-package com.taxibcn.service;
-
-import com.taxibcn.logic.interfaces.Sendable;
-import com.taxibcn.logic.model.Taxi;
-
+package logic.services;
+import project.models.*;
 import java.util.ArrayList;
 
 /**

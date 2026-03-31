@@ -1,6 +1,6 @@
-package com.taxibcn.service;
+package report.view.logic;
 
-import com.taxibcn.service.ServiceRequest;
+import project.models.ServiceRequest;
 
 import java.util.ArrayList;
 

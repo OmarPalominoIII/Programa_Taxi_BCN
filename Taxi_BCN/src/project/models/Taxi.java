@@ -1,7 +1,4 @@
-package com.taxibcn.logic.model;
-
-import com.taxibcn.logic.enums.TaxiStatus;
-import com.taxibcn.logic.enums.TaxiType;
+package project.models;
 
 import java.sql.Driver;
 

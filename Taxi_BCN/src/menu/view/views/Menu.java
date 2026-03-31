@@ -1,4 +1,6 @@
-package com.taxibcn.UI;
+package menu.view.views;
+import logic.services.*;
+import report.view.logic.*;
 
 public class Menu {
     public static String imprimirOpciones(){

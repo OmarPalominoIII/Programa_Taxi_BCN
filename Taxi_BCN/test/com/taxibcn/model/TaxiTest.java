@@ -1,6 +1,6 @@
 package com.taxibcn.model;
 
-import com.taxibcn.UI.Menu;
+import UI.Menu;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

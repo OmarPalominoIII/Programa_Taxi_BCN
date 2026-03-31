@@ -1,4 +1,4 @@
-package com.taxibcn.service;
+package service;
 
 public class ServiceManager {
 }

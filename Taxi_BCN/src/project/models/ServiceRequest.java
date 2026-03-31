@@ -1,10 +1,4 @@
-package com.taxibcn.service;
-
-import com.taxibcn.logic.enums.ServiceStatus;
-import com.taxibcn.logic.model.Customer;
-import com.taxibcn.logic.model.Position;
-import com.taxibcn.logic.model.Taxi;
-
+package project.models;
 import java.time.LocalTime;
 
 /**

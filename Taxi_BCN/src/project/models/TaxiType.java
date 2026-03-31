@@ -1,4 +1,4 @@
-package com.taxibcn.logic.enums;
+package project.models;
 
 public enum TaxiType {
         STANDARD,

@@ -1,4 +1,4 @@
-package com.taxibcn.logic.enums;
+package project.models;
 
 /**
  * Possible operational states of a taxi.

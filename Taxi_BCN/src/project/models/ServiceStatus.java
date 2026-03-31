@@ -1,4 +1,4 @@
-package com.taxibcn.logic.enums;
+package project.models;
 
 /**
  * Lifecycle states of a service request.
