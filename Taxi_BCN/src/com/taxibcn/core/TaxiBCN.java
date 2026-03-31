@@ -1,8 +1,12 @@
+package com.taxibcn.core;
+
+import com.taxibcn.UI.Menu;
+
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class TAXIBCN {
+public class TaxiBCN {
 
     public static void executar() {
 
@@ -27,11 +31,12 @@ public class TAXIBCN {
             disponibilitat_taxi.put(i, lliure);
         }
 
-        System.out.println("______________________");
-        System.out.println("       MENÚ           ");
-        System.out.println("  1) TAXI NORMAL      ");
-        System.out.println("  2) TAXI ADAPTAT     ");
-        System.out.println("______________________");
+        System.out.println(
+                        "______________________" +
+                        "\n       MENÚ           " +
+                        "\n  1) TAXI NORMAL      " +
+                        "\n  2) TAXI ADAPTAT     " +
+                        "\n______________________");
 
         double hora = sc.nextInt();
 
@@ -65,13 +70,7 @@ public class TAXIBCN {
 
         int opcio;
         do {
-            System.out.println("\n--- Menú Gestió Serveis ---");
-            System.out.println("1. Crear servei");
-            System.out.println("2. Marcar arribada del taxi");
-            System.out.println("3. Finalitzar servei");
-            System.out.println("4. Mostrar serveis");
-            System.out.println("5. Sortir");
-            System.out.print("Opció: ");
+            Menu.imprimirOpciones();
 
             opcio = sc.nextInt();
             sc.nextLine();
