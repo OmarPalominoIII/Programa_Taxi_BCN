@@ -6,40 +6,46 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-<<<<<<< Updated upstream:Taxi_BCN/src/com/taxibcn/core/TaxiBCN.java
 public class TaxiBCN {
 
-=======
 public class TAXIBCN {
     static final int SIZE = 16;
+
     static class posicion {
         int row;
         int col;
+
         posicion(int row, int col) {
             this.row = row;
             this.col = col;
         }
     }
+
     static class Taxi {
         String name;
         posicion position;
+
         Taxi(String name, posicion position) {
             this.name = name;
             this.position = position;
         }
     }
+
     static class servicio {
         String name;
         posicion position;
+
         servicio(String name, posicion position) {
             this.name = name;
             this.position = position;
         }
     }
+
     static class CityMap {
         String[][] map;
         ArrayList<Taxi> taxis;
         ArrayList<servicio> services;
+
         CityMap() {
             map = new String[SIZE][SIZE];
             taxis = new ArrayList<>();
@@ -50,14 +56,17 @@ public class TAXIBCN {
                 }
             }
         }
+
         void anyadirtaxi(Taxi taxi) {
             taxis.add(taxi);
             map[taxi.position.row][taxi.position.col] = taxi.name;
         }
+
         void anyadirservicio(servicio s) {
             services.add(s);
             map[s.position.row][s.position.col] = s.name;
         }
+
         void actualizarMapa() {
             for (int i = 0; i < SIZE; i++) {
                 for (int j = 0; j < SIZE; j++) {
@@ -71,6 +80,7 @@ public class TAXIBCN {
                 map[s.position.row][s.position.col] = s.name;
             }
         }
+
         void dibujarmapa() {
             actualizarMapa();
             System.out.println("\nMapa de la ciudad:");
@@ -82,7 +92,7 @@ public class TAXIBCN {
             }
         }
     }
->>>>>>> Stashed changes:Taxi_BCN/src/TAXIBCN.java
+
     public static void executar() {
         Scanner sc = new Scanner(System.in);
         int total_taxis = 10;
@@ -95,22 +105,19 @@ public class TAXIBCN {
         for (int i = 0; i < total_taxis; i++) {
             disponibilitat_taxi.put(i, lliure);
         }
-<<<<<<< Updated upstream:Taxi_BCN/src/com/taxibcn/core/TaxiBCN.java
 
         System.out.println(
-                        "______________________" +
+                "______________________" +
                         "\n       MENÚ           " +
                         "\n  1) TAXI NORMAL      " +
                         "\n  2) TAXI ADAPTAT     " +
                         "\n______________________");
 
-=======
         System.out.println("______________________");
         System.out.println("       MENÚ           ");
         System.out.println("  1) TAXI NORMAL      ");
         System.out.println("  2) TAXI ADAPTAT     ");
         System.out.println("______________________");
->>>>>>> Stashed changes:Taxi_BCN/src/TAXIBCN.java
         double hora = sc.nextInt();
         if (hora < 19) {
             for (int i = 0; i < total_taxis; i++) {
@@ -145,10 +152,8 @@ public class TAXIBCN {
         int serveiCount = 0;
         int opcio;
         do {
-<<<<<<< Updated upstream:Taxi_BCN/src/com/taxibcn/core/TaxiBCN.java
             Menu.imprimirOpciones();
 
-=======
             System.out.println("\n--- Menú Gestió Serveis ---");
             System.out.println("1. Crear servei");
             System.out.println("2. Marcar arribada del taxi");
@@ -157,7 +162,6 @@ public class TAXIBCN {
             System.out.println("5. Mostrar mapa");
             System.out.println("6. Sortir");
             System.out.print("Opció: ");
->>>>>>> Stashed changes:Taxi_BCN/src/TAXIBCN.java
             opcio = sc.nextInt();
             sc.nextLine();
             switch (opcio) {
@@ -166,22 +170,22 @@ public class TAXIBCN {
 
                     int filaInicio, colInicio;
 
-                    while (true){
+                    while (true) {
                         System.out.print("Fila inici:");
                         filaInicio = sc.nextInt();
-                        if (filaInicio>= 0 && filaInicio < SIZE){
+                        if (filaInicio >= 0 && filaInicio < SIZE) {
                             break;
-                        }else {
+                        } else {
                             System.out.println("Fins tan lluny no arribem, ho sentim.");
                         }
                     }
 
-                    while (true){
+                    while (true) {
                         System.out.print("Columna inici:");
                         colInicio = sc.nextInt();
-                        if (filaInicio>= 0 && filaInicio < SIZE){
+                        if (filaInicio >= 0 && filaInicio < SIZE) {
                             break;
-                        }else {
+                        } else {
                             System.out.println("Fins tan lluny no arribem, ho sentim.");
                         }
                     }
@@ -245,4 +249,4 @@ public class TAXIBCN {
             }
         } while (opcio != 6);
     }
-}
+}}
