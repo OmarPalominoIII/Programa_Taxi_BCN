@@ -1,3 +1,4 @@
+package project_models;
 
 public abstract class Person {
 

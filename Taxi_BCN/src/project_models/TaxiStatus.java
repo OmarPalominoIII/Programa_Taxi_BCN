@@ -1,4 +1,4 @@
-package project.models;
+package project_models;
 
 /**
  * Possible operational states of a taxi.

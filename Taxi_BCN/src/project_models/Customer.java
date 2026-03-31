@@ -1,4 +1,4 @@
-package project.models;
+package project_models;
 
 public class Customer extends Person {
 

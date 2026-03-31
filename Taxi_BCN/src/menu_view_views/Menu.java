@@ -1,6 +1,5 @@
-package menu.view.views;
+package menu_view_views;
 import logic.services.*;
-import report.view.logic.*;
 
 public class Menu {
     public static String imprimirOpciones(){

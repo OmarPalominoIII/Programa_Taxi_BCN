@@ -1,5 +1,8 @@
+package report_view_logic;
+
+import project_models.ServiceRequest;
+
 import java.util.ArrayList;
-import java.util.Comparator;
 
 /**
  * Handles report generation and statistical calculations
