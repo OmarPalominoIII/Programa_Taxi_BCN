@@ -1,7 +1,21 @@
 package menu_view_views;
-import logic.services.*;
+import logic_services.*;
+import project_models.ConsoleMessenger;
+import project_models.Sendable;
+import report_view_logic.*;
 
-public class Menu {
+public class LogicMenu {
+    private ServiceManager serviceManager;
+    private ReportManager reportManager;
+    private Sendable messenger;
+
+    public LogicMenu(){
+        this.reportManager = new ReportManager();
+        this.messenger = new ConsoleMessenger();
+        this.serviceManager = new ServiceManager(this.reportManager, this.messenger);
+    }
+
+
     public static String imprimirOpciones(){
         return
                 """

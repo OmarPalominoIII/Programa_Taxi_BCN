@@ -1,6 +1,7 @@
 package logic_services;
 import java.util.ArrayList;
 import project_models.*;
+import report_view_logic.*;
 
 /**
  * Core business logic layer.
@@ -8,23 +9,15 @@ import project_models.*;
  * Implements Sendable to support system-wide message notifications.
  */
 
-public class ServiceManager implements Sendable {
+public class ServiceManager {
 
     private ArrayList<ServiceRequest> activeServices; // currently running services
     private ArrayList<ServiceRequest> waitingList;    // requests pending a free taxi
     private int maxActive;                            // capacity limit of the services
     private int maxWaitingItems;                      // waiting list capacity limit
-    private Sendable messenger;
+    private Sendable messenger;                       // interface
     private ArrayList<Taxi> taxis;                    // registered taxis in the fleet
-
-    public ServiceManager(Sendable messenger) {
-        this.activeServices = new ArrayList<>();
-        this.waitingList = new ArrayList<>();
-        this.maxActive = 50;
-        this.maxWaitingItems = 10;
-        this.messenger = messenger;
-        this.taxis = new ArrayList<>();
-    }
+    private ReportManager reportManager;              // import methods of this class
 
     public ArrayList<ServiceRequest> getActiveServices() {
         return activeServices;
@@ -34,25 +27,44 @@ public class ServiceManager implements Sendable {
         return waitingList;
     }
 
+    public int getMaxActive() {
+        return maxActive;
+    }
+
     public int getMaxWaitingItems() {
         return maxWaitingItems;
+    }
+
+    public Sendable getMessenger() {
+        return messenger;
     }
 
     public ArrayList<Taxi> getTaxis() {
         return taxis;
     }
 
+    public ServiceManager(ReportManager reportManager, Sendable messenger) {
+        this.activeServices = new ArrayList<>();
+        this.waitingList = new ArrayList<>();
+        this.maxActive = 50;
+        this.maxWaitingItems = 10;
+        this.messenger = messenger;
+        this.reportManager = reportManager;
+        this.taxis = new ArrayList<>();
+    }
+
     // this method should be called from the menu when a service is completed
     public void endService(ServiceRequest serviceToEnd, Position finalPosition){
-        // updated the taxi's status and position
-        Taxi taxi = serviceToEnd.getTaxi();
-        taxi.setPosition(finalPosition);
-        taxi.setStatus(TaxiStatus.AVAILABLE);
-
         // update service
         serviceToEnd.setServiceStatus(ServiceStatus.COMPLETED);
 
         // move service
+        this.reportManager.addAttendedService(serviceToEnd);
+
+        // updated the taxi's status and position
+        Taxi taxi = serviceToEnd.getTaxi();
+        taxi.setPosition(finalPosition);
+        taxi.setStatus(TaxiStatus.AVAILABLE);
 
         // clean servicio of the list of active services
         this.getActiveServices().remove(serviceToEnd);
@@ -85,14 +97,16 @@ public class ServiceManager implements Sendable {
 
     // this method registers a taxi using the private methods below
     public void registeredService(ServiceRequest newService){
-        if (getActiveServices().size() > maxActive){
+        if (getActiveServices().size() < maxActive){
             Taxi newtaxi = findNearestTaxi(newService);
 
                 // check if a taxi is available
             if (newtaxi != null){
                 assignTaxiToService(newService, newtaxi);
                 getActiveServices().add(newService);
+                double time = reportManager.calculateSingleServiceRouteTime(newtaxi, newService);
                 messenger.sendMessage("¡Assigned taxi! License Plate: " + newtaxi.getLicensePlate());
+                messenger.sendMessage("Estimated arrival time: " + time + " min");
             }else {
                 // add service to waiting list
                 addServiceToWaitingList(newService);
@@ -139,16 +153,11 @@ public class ServiceManager implements Sendable {
         if (this.getWaitingList().size() < maxWaitingItems) {
             service.setServiceStatus(ServiceStatus.PENDING);
             this.getWaitingList().add(service);
-            sendMessage(service.getCustomer().getFirstName() +
+            messenger.sendMessage(service.getCustomer().getFirstName() +
                     "You have been moved to the waiting list, POSITION: " + getWaitingList().size());
         }else {
-            sendMessage(service.getCustomer().getFirstName() +
+            messenger.sendMessage(service.getCustomer().getFirstName() +
                     "The service cannot be registered, try it later");
         }
-    }
-
-    @Override
-    public void sendMessage(String message) {
-        System.out.println(message);
     }
 }
