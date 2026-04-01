@@ -13,13 +13,16 @@ public class ServiceRequest {
     private ServiceStatus serviceStatus;
     private Taxi taxi;
     private LocalTime requestTime;
+    private TaxiType taxirequired;
 
-    public ServiceRequest(int serviceCode, Customer customer, Position customerPosition) {
+    public ServiceRequest(int serviceCode, Customer customer, Position customerPosition, TaxiType taxirequired) {
         this.serviceCode = serviceCode;
         this.customer = customer;
         this.customerPosition = customerPosition;
         this.serviceStatus = ServiceStatus.PENDING; // always starts as pending
         this.requestTime = LocalTime.now();
+        this.taxi = null;
+        this.taxirequired = taxirequired;
     }
 
     // Getters
@@ -29,6 +32,7 @@ public class ServiceRequest {
     public ServiceStatus getServiceStatus()  { return serviceStatus; }
     public Taxi getTaxi()                    { return taxi; }
     public LocalTime getRequestTime()        { return requestTime; }
+    public TaxiType getTaxirequired()        {return taxirequired; }
 
     // Setters
     public void setServiceCode(int serviceCode)              { this.serviceCode = serviceCode; }
@@ -37,6 +41,7 @@ public class ServiceRequest {
     public void setServiceStatus(ServiceStatus serviceStatus){ this.serviceStatus = serviceStatus; }
     public void setTaxi(Taxi taxi)                           { this.taxi = taxi; }
     public void setRequestTime(LocalTime requestTime)        { this.requestTime = requestTime; }
+    public void setTaxirequired(TaxiType taxirequired)       { this.taxirequired = taxirequired; }
 
     @Override
     public String toString() {
