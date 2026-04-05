@@ -119,14 +119,11 @@ public class ServiceManager {
         int minimumDistance = Integer.MAX_VALUE;
 
         for (Taxi taxi : this.getTaxis()){
-                // verify conditions
             if (taxi.getStatus() == TaxiStatus.AVAILABLE &&
-                    taxi.getType() == serviceRequest.getTaxi().getType()){
+                    taxi.getType() == serviceRequest.getTaxirequired()){
 
-                // apply distance manhattan
-                int distance = calculateDistanceByManhattan(taxi.getPosition(), serviceRequest.getTaxi().getPosition());
+                int distance = calculateDistanceByManhattan(taxi.getPosition(), serviceRequest.getCustomerPosition());
 
-                // updated the minimum distance and taxi rates
                 if (distance < minimumDistance){
                     minimumDistance = distance;
                     taxidesignated = taxi;
@@ -141,11 +138,9 @@ public class ServiceManager {
     }
 
     private void assignTaxiToService(ServiceRequest service, Taxi taxi){
-        // updated the service and taxi status
         service.setTaxi(taxi);
         service.setServiceStatus(ServiceStatus.IN_PROGRESS);
 
-        // changed the taxi status
         taxi.setStatus(TaxiStatus.BUSY);
     }
 
@@ -160,4 +155,23 @@ public class ServiceManager {
                     "The service cannot be registered, try it later");
         }
     }
+
+    public void marcarArribada(int serviceCode) {
+        ServiceRequest servei = null;
+
+        for (ServiceRequest s : activeServices) {
+            if (s.getServiceCode() == serviceCode) {
+                servei = s;
+                break;
+            }
+        }
+
+        if (servei != null) {
+            servei.setServiceStatus(ServiceStatus.IN_PROGRESS);
+            messenger.sendMessage("¡El taxi ha arribat! El client ja és dins del vehicle.");
+        } else {
+            messenger.sendMessage("No s'ha trobat cap servei actiu amb el codi: " + serviceCode);
+        }
+    }
+
 }
