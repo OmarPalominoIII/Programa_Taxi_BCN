@@ -1,3 +1,8 @@
+<<<<<<< Updated upstream:Scrum_TaxiBCN/src/Taxi.java
+=======
+package project_models;
+
+>>>>>>> Stashed changes:Taxi_BCN/src/project_models/Taxi.java
 /**
  * Represents a taxi vehicle with its driver, position, type, and current status.
  */
