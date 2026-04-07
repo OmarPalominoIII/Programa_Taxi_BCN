@@ -10,7 +10,10 @@ import java.util.ArrayList;
  * Handles report generation and statistical calculations
  * over the list of attended (completed) service requests.
  */
+
 public class ReportManager {
+
+    private static final int MINUTES_PER_BLOCK = 2;
 
     private ArrayList<ServiceRequest> attendedServices;
 
@@ -29,50 +32,34 @@ public class ReportManager {
             attendedServices.add(serviceRequest);
         }
         else {
-            System.err.println("Service request has not been completed");
+            System.err.println("Service request has not been completed, cannot be added");
         }
     }
 
     //En esta parte clasificamos y hacemos una lista del estado de cada servicio
-    public void classifyServices(){
-        ArrayList<ServiceRequest> completed = new ArrayList<>();
-        ArrayList<ServiceRequest> inProgress = new ArrayList<>();
-        ArrayList<ServiceRequest> pending = new ArrayList<>();
 
-        for (ServiceRequest serviceRequest : attendedServices){
-            switch (serviceRequest.getServiceStatus()){
-                case COMPLETED:
-                    completed.add(serviceRequest);
-                    break;
-
-                case IN_PROGRESS:
-                    inProgress.add(serviceRequest);
-                    break;
-
-                case PENDING:
-                    pending.add(serviceRequest);
-                    break;
-
-            }
-        }
+    public void classifyServices(ArrayList<ServiceRequest> activeServices, ArrayList<ServiceRequest> waitingList){
         System.out.println("\n========== SERVICE CLASSIFICATION ==========");
-        System.out.println("COMPLETED: " + completed.size());
-        for (ServiceRequest serviceRequest : completed){
-            System.out.println(serviceRequest.toString());
-        }
-        System.out.println("INPROGRESS: " + inProgress.size());
-        for (ServiceRequest serviceRequest : inProgress){
-            System.out.println(serviceRequest.toString());
-        }
-        System.out.println("PENDING: " + pending.size());
-        for (ServiceRequest serviceRequest : pending){
-            System.out.println(serviceRequest.toString());
+
+        System.out.println("COMPLETED: " + attendedServices.size());
+        for (ServiceRequest sr : attendedServices) {
+            System.out.println(" " +  sr.toString());
         }
 
-        System.out.println("==================================");
+        System.out.println("IN_PROGRESS: " + activeServices.size());
+        for (ServiceRequest sr : activeServices) {
+            System.out.println(" " + sr.toString());
+        }
 
+        System.out.println("PENDING    : " + waitingList.size());
+        for (ServiceRequest sr : waitingList) {
+            System.out.println(" " + sr.toString());
+        }
+        System.out.println("============================================");
 
     }
+
+
     //Voy a calcular el Tiempo Promedio de Espera en una lista de espera
     public double calculateAverageWaitingTime(){
         if (attendedServices.isEmpty()){
@@ -99,16 +86,21 @@ public class ReportManager {
         return average;
     }
 
-    public double calculateSingleServiceRouteTime(Taxi taxi, ServiceRequest request){
-        int rowdiff = Math.abs(taxi.getPosition().getRow() - request.getCustomerPosition().getRow());
-        int coldiff = Math.abs(taxi.getPosition().getColumn() - request.getCustomerPosition().getColumn());
-
-        return (double) (rowdiff + coldiff) * 2;
+    private double calculateManhattanMinutes(Position from, Position to){
+        //Calculamos la diferencia de filas que hay entre la ubicación del taxi y la ubicación del Cliente.
+        //El math.abs lo ponemos para que el valor que salga siempre lo imprima en positivo debido a que una distancia no puede ser negativa
+        int rowDiff = Math.abs(from.getRow() - to.getRow());
+        //Mismo cálculo pero con las columnas
+        int colDiff = Math.abs(from.getColumn() - to.getColumn());
+        return (double)(rowDiff + colDiff) * MINUTES_PER_BLOCK;
     }
 
+    public double calculateSingleServiceRouteTime(Taxi taxi, ServiceRequest request){
+        return calculateManhattanMinutes(taxi.getPosition(), request.getCustomerPosition());
+    }
 
     //En la siguiente clase calculamos el tiempo de ruta que tardara el taxi en hacer el recorrido
-    //Utilizamos distancia de Manhattan y asumimos que por cada bloque tarde 2 minutos en recorrerlo
+    //Utilizamos problema de Manhattan y asumimos que por cada bloque tarde 2 minutos en recorrerlo
 
     public double calculateAverageEstimatedRoutedTime(){
         if (attendedServices.isEmpty()){
@@ -116,28 +108,20 @@ public class ReportManager {
             return 0;
         }
 
-        final int minutesPerBlock = 2;
         long totalMinutes = 0;
         int count = 0;
 
         for (ServiceRequest serviceRequest : attendedServices){
-            if (serviceRequest.getTaxi() != null && serviceRequest.getCustomerPosition() != null &&
-                    serviceRequest.getTaxi().getPosition() != null){
+            if (serviceRequest.getTaxi() != null && serviceRequest.getCustomerPosition() != null && serviceRequest.getTaxi().getPosition() != null){
 
-                /* Calculamos la diferencia de filas que hay entre la ubicación del taxi y la ubicación del Cliente
-                El math.abs lo ponemos para que el valor que salga siempre lo imprima en
-                positivo debido a que una distancia no puede ser negativa
-                 */
-
-                int rowDiff = Math.abs(serviceRequest.getTaxi().getPosition().getRow() - serviceRequest.getCustomerPosition().getRow());
-                int colDiff = Math.abs(serviceRequest.getTaxi().getPosition().getColumn() - serviceRequest.getCustomerPosition().getColumn());
-
-                totalMinutes += (long)(rowDiff + colDiff) *  minutesPerBlock;
+                totalMinutes += (long) calculateManhattanMinutes(serviceRequest.getTaxi().getPosition(), serviceRequest.getCustomerPosition());
                 count++;
             }
         }
         double average = count > 0 ? (double) totalMinutes / count : 0;
+
         System.out.println("\n  Average estimated route time: " + average + " minutes (over " + count + " services)\n");
+
         return average;
     }
 
@@ -164,23 +148,28 @@ public class ReportManager {
             average = 0;
         }
         System.out.println("\n  Average arrival time: " + average + " minutes (over " + count + " services)\n");
+
         return average;
     }
 
     //Ahora hacemos el PRINT REPORT
-    public void printReport() {
+    public void printReport(ArrayList<ServiceRequest> activeServices, ArrayList<ServiceRequest> waitingList) {
+
+        int total = activeServices.size() + activeServices.size() + waitingList.size() + waitingList.size();
+
         System.out.println("\n");
         System.out.println("  ╔══════════════════════════════════════════╗");
         System.out.println("  ║          TAXIS BCN - FULL REPORT         ║");
         System.out.println("  ╠══════════════════════════════════════════╣");
-        System.out.printf("   ║  Total services recorded:                ║%n", attendedServices.size());
+        System.out.printf("   ║  Total services recorded: "+ total+"     ║%n");
         System.out.println("  ╚══════════════════════════════════════════╝");
 
-        classifyServices();
+        classifyServices(activeServices, waitingList);
 
         double avgWaiting = calculateAverageWaitingTime();
         double avgRoute = calculateAverageEstimatedRoutedTime();
         double avgArrival = calculateAverageArrivalTime();
+
 
         System.out.println("\n  --- SUMMARY ---");
         System.out.println("  Avg. waiting list time  : " + avgWaiting + " min");
@@ -188,4 +177,6 @@ public class ReportManager {
         System.out.println("  Avg. arrival time       : " + avgArrival + " min");
         System.out.println("  ----------------");
     }
+
+
 }
