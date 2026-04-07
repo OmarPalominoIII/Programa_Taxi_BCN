@@ -155,7 +155,7 @@ public class ReportManager {
     //Ahora hacemos el PRINT REPORT
     public void printReport(ArrayList<ServiceRequest> activeServices, ArrayList<ServiceRequest> waitingList) {
 
-        int total = activeServices.size() + activeServices.size() + waitingList.size() + waitingList.size();
+        int total = activeServices.size() + waitingList.size() + attendedServices.size();
 
         System.out.println("\n");
         System.out.println("  ╔══════════════════════════════════════════╗");
@@ -177,6 +177,4 @@ public class ReportManager {
         System.out.println("  Avg. arrival time       : " + avgArrival + " min");
         System.out.println("  ----------------");
     }
-
-
 }
