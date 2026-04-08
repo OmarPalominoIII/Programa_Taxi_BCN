@@ -153,7 +153,9 @@ public class ReportManager {
     }
 
     //Ahora hacemos el PRINT REPORT
-    public void printReport(ArrayList<ServiceRequest> activeServices, ArrayList<ServiceRequest> waitingList) {
+    public void printReport() {
+        ArrayList<ServiceRequest> activeServices = new ArrayList<>();
+        ArrayList<ServiceRequest> waitingList = new ArrayList<>();
 
         int total = activeServices.size() + waitingList.size() + attendedServices.size();
 

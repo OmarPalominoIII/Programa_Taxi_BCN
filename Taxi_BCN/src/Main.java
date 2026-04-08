@@ -15,10 +15,21 @@ public class Main {
 
         precarregarFlota(serviceManager);
 
+        System.out.println("\n\n");
+        System.out.println("╔==================================================╗");
+        System.out.println("║                                                  ║");
+        System.out.println("║          PROGRAM OF TAXI MANAGEMENT              ║");
+        System.out.println("║                                                  ║");
+        System.out.println("║                    SCRUM II                      ║");
+        System.out.println("║                                                  ║");
+        System.out.println("╚==================================================╝");
+        System.out.println("\n           Press[ENTER] to start... ");
+        sc.nextLine();
+
         int opcion = 0;
         boolean continuar = true;
 
-        System.out.println("=== Benvingut al Sistema de Gestió Taxi BCN ===");
+        System.out.println("=== Welcome to the BCN Taxi Management System ===");
 
         while (continuar) {
             System.out.print(LogicMenu.imprimirOpciones());
@@ -28,7 +39,8 @@ public class Main {
 
                 switch (opcion) {
                     case 1 -> registrarNouServei(serviceManager, sc);
-                    case 2 -> gestionarArribadaTaxi(serviceManager, sc);                    case 3 -> finalitzarServeiActiu(serviceManager, sc);
+                    case 2 -> gestionarArribadaTaxi(serviceManager, sc);
+                    case 3 -> finalitzarServeiActiu(serviceManager, sc);
                     case 4 -> mostrarEstatSistema(serviceManager, reportManager);
                     case 5 -> {
                         System.out.println("Sortint del sistema... Bona ruta!");
