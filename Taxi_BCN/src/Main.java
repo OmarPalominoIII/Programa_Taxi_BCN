@@ -43,16 +43,16 @@ public class Main {
                     case 3 -> finalitzarServeiActiu(serviceManager, sc);
                     case 4 -> mostrarEstatSistema(serviceManager, reportManager);
                     case 5 -> {
-                        System.out.println("Sortint del sistema... Bona ruta!");
+                        System.out.println("Leaving the system... Have a nice trip!");
                         continuar = false;
                     }
-                    default -> System.out.println("Opció no vàlida, tria del 1 al 5.");
+                    default -> System.out.println("Invalid option, choose from 1 to 5");
                 }
 
             } catch (NumberFormatException e) {
-                System.out.println("ERROR: Si us plau, introdueix un número vàlid (5 per sortir).");
+                System.out.println("ERROR: Please enter a valid number (5 to exit)");
             } catch (Exception e) {
-                System.out.println("S'ha produït un error inesperat: " + e.getMessage());
+                System.out.println("An unexpected error occurred: " + e.getMessage());
             }
         }
     }
@@ -70,27 +70,28 @@ public class Main {
 
         sm.getTaxis().add(t1);
         sm.getTaxis().add(t2);
-        System.out.println("[INFO] Flota inicialitzada amb 2 vehicles (Lenovo ThinkCentre Server OK).");
+        System.out.println("[INFO] Fleet initialized with 2 vehicles (Lenovo ThinkCentre Server OK)");
     }
 
     /**
      * Captura les dades del client i la posició per crear una sol·licitud
      */
     private static void registrarNouServei(ServiceManager sm, Scanner sc) {
-        System.out.println("\n--- Registre de Nou Servei ---");
-        String nom = campoObligatorio(sc, "Nom del client: ");
+        System.out.println("\n--- New Service Registration ---");
+        String nom = campoObligatorio(sc, "Name: ");
+        String lastname = campoObligatorio(sc, "Lastname: ");
         String dni = campoObligatorio(sc, "DNI: ");
 
-        System.out.print("Fila de recollida: ");
+        System.out.print("Location row: ");
         int row = Integer.parseInt(sc.nextLine());
-        System.out.print("Columna de recollida: ");
+        System.out.print("Location column: ");
         int col = Integer.parseInt(sc.nextLine());
 
-        System.out.print("Tipus de taxi (1: Standard, 2: Adaptat): ");
+        System.out.print("Taxi type (1: Standard, 2: Adapted): ");
         int tipusIn = Integer.parseInt(sc.nextLine());
         TaxiType tipus = (tipusIn == 2) ? TaxiType.ADAPTED : TaxiType.STANDARD;
 
-        Customer client = new Customer(nom, "Usuari", 20, dni, "600000000");
+        Customer client = new Customer(nom, lastname, 20, dni, "600000000");
         ServiceRequest peticio = new ServiceRequest((int)(Math.random()*1000), client, new Position(row, col), tipus);
 
         sm.registeredService(peticio);
@@ -99,18 +100,18 @@ public class Main {
     private static void finalitzarServeiActiu(ServiceManager sm, Scanner sc) {
         // 1. Validació preventiva: Si no hi ha serveis, no cal demanar dades
         if (sm.getActiveServices().isEmpty()) {
-            System.out.println("No hi ha cap servei actiu per finalitzar.");
+            System.out.println("There are no active services to end");
             return;
         }
 
         try {
-            System.out.println("\n--- Finalitzar Servei ---");
-            System.out.println("Triï el codi del servei a finalitzar:");
+            System.out.println("\n--- End service ---");
+            System.out.println("Choose the service code to end: ");
             for (ServiceRequest s : sm.getActiveServices()) {
-                System.out.println("- ID: " + s.getServiceCode() + " | Client: " + s.getCustomer().getFirstName());
+                System.out.println("- ID: " + s.getServiceCode() + " | Customer: " + s.getCustomer().getFirstName());
             }
 
-            System.out.print("Codi ID: ");
+            System.out.print("Code ID: ");
             int idCerca = Integer.parseInt(sc.nextLine());
 
             ServiceRequest serveiTrobat = null;
@@ -122,9 +123,9 @@ public class Main {
             }
 
             if (serveiTrobat != null) {
-                System.out.print("Fila destí final: ");
+                System.out.print("End destination row: ");
                 int fFi = Integer.parseInt(sc.nextLine());
-                System.out.print("Columna destí final: ");
+                System.out.print("End destination column: ");
                 int cFi = Integer.parseInt(sc.nextLine());
 
                 Position posicioFinal = new Position(fFi, cFi);
@@ -132,21 +133,21 @@ public class Main {
                 sm.endService(serveiTrobat, posicioFinal);
 
             } else {
-                System.out.println("ERROR: No s'ha trobat cap servei amb l'ID " + idCerca);
+                System.out.println("ERROR: No service found with the ID: " + idCerca);
             }
 
         } catch (NumberFormatException e) {
-            System.out.println("ERROR: Entrada no vàlida. Cal introduir un número.");
+            System.out.println("ERROR: Invalid input. Please enter a number.");
         }
     }
 
     private static void mostrarEstatSistema(ServiceManager sm, ReportManager rm) {
-        System.out.println("\n--- ESTAT ACTUAL DEL SISTEMA ---");
-        System.out.println("Serveis Actius: " + sm.getActiveServices().size());
-        System.out.println("Llista d'Espera: " + sm.getWaitingList().size());
+        System.out.println("\n--- CURRENT SYSTEM STATUS ---");
+        System.out.println("Active service: " + sm.getActiveServices().size());
+        System.out.println("Waiting list: " + sm.getWaitingList().size());
 
-        System.out.println("\nGenerant Informe Estadístic...");
-        rm.printReport();
+        System.out.println("\nGenerating Statistical Report...");
+        rm.printReport(sm.getActiveServices(), sm.getWaitingList());
     }
 
     /**
@@ -157,33 +158,33 @@ public class Main {
         do {
             System.out.print(mensaje);
             valor = sc.nextLine().trim();
-            if (valor.isEmpty()) System.out.println("Aquest camp és obligatori.");
+            if (valor.isEmpty()) System.out.println("This fields is required");
         } while (valor.isEmpty());
         return valor;
     }
 
     private static void gestionarArribadaTaxi(ServiceManager sm, Scanner sc) {
-        System.out.println("\n--- Marcar Arribada del Taxi ---");
+        System.out.println("\n--- Mark the arrival of the taxi ---");
 
         // Validem si hi ha feina a fer abans de demanar dades
         if (sm.getActiveServices().isEmpty()) {
-            System.out.println("No hi ha serveis actius per gestionar.");
+            System.out.println("There are no active services to manage");
             return;
         }
 
         try {
-            System.out.println("Serveis actuals de camí:");
+            System.out.println("Current road services: ");
             for (ServiceRequest s : sm.getActiveServices()) {
-                System.out.println("- ID: " + s.getServiceCode() + " | Client: " + s.getCustomer().getFirstName());
+                System.out.println("- ID: " + s.getServiceCode() + " | Customer: " + s.getCustomer().getFirstName());
             }
 
-            System.out.print("Introdueix l'ID del servei on el taxi ha arribat: ");
+            System.out.print("Enter the service ID where the taxi arrived: ");
             int idArribada = Integer.parseInt(sc.nextLine());
 
             sm.marcarArribada(idArribada);
 
         } catch (NumberFormatException e) {
-            System.out.println("Error: L'ID introduït no és un format numèric vàlid.");
+            System.out.println("Error: The ID entered is not a valid numeric format");
         }
     }
 

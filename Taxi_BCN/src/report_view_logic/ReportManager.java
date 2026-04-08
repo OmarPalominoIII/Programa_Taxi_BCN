@@ -153,11 +153,9 @@ public class ReportManager {
     }
 
     //Ahora hacemos el PRINT REPORT
-    public void printReport() {
-        ArrayList<ServiceRequest> activeServices = new ArrayList<>();
-        ArrayList<ServiceRequest> waitingList = new ArrayList<>();
+    public void printReport(ArrayList<ServiceRequest> actives, ArrayList<ServiceRequest> waiting) {
 
-        int total = activeServices.size() + waitingList.size() + attendedServices.size();
+        int total = actives.size() + waiting.size() + attendedServices.size();
 
         System.out.println("\n");
         System.out.println("  ╔══════════════════════════════════════════╗");
@@ -166,7 +164,7 @@ public class ReportManager {
         System.out.printf("   ║  Total services recorded: "+ total+"     ║%n");
         System.out.println("  ╚══════════════════════════════════════════╝");
 
-        classifyServices(activeServices, waitingList);
+        classifyServices(actives, waiting);
 
         double avgWaiting = calculateAverageWaitingTime();
         double avgRoute = calculateAverageEstimatedRoutedTime();

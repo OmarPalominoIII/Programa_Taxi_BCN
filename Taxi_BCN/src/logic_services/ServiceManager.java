@@ -55,11 +55,11 @@ public class ServiceManager {
 
     // this method should be called from the menu when a service is completed
     public void endService(ServiceRequest serviceToEnd, Position finalPosition){
-        // update service
-        serviceToEnd.setServiceStatus(ServiceStatus.COMPLETED);
-
         // move service
         this.reportManager.addAttendedService(serviceToEnd);
+
+        // update service
+        serviceToEnd.setServiceStatus(ServiceStatus.COMPLETED);
 
         // updated the taxi's status and position
         Taxi taxi = serviceToEnd.getTaxi();

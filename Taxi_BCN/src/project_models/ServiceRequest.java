@@ -45,9 +45,8 @@ public class ServiceRequest {
 
     @Override
     public String toString() {
-        return "ServiceRequest{code=" + serviceCode +
-               ", customer=" + customer.getFirstName() + " " + customer.getLastName() +
-               ", status=" + serviceStatus +
-               ", time=" + requestTime + "}";
+        return "ID: " + serviceCode +
+               ", Customer: " + customer.getFirstName() + " " + customer.getLastName() +
+               ", Status: " + serviceStatus;
     }
 }
