@@ -1,15 +1,15 @@
-package menu_view_views;
+package user_interface.ui_reports;
 import logic_services.*;
 import project_models.ConsoleMessenger;
 import project_models.Sendable;
-import report_view_logic.*;
+import report_services.ReportManager;
 
-public class LogicMenu {
+public class LogicMenuReports {
     private ServiceManager serviceManager;
     private ReportManager reportManager;
     private Sendable messenger;
 
-    public LogicMenu(){
+    public LogicMenuReports(){
         this.reportManager = new ReportManager();
         this.messenger = new ConsoleMessenger();
         this.serviceManager = new ServiceManager(this.reportManager, this.messenger);

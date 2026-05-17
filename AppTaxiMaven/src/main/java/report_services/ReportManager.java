@@ -1,4 +1,4 @@
-package report_view_logic;
+package report_services;
 
 import project_models.*;
 
@@ -89,10 +89,10 @@ public class ReportManager {
     private double calculateManhattanMinutes(Position from, Position to){
         //Calculamos la diferencia de filas que hay entre la ubicación del taxi y la ubicación del Cliente.
         //El math.abs lo ponemos para que el valor que salga siempre lo imprima en positivo debido a que una distancia no puede ser negativa
-        int rowDiff = Math.abs(from.getRow() - to.getRow());
+        double latitudeDiff = Math.abs(from.getLatitude() - to.getLatitude());
         //Mismo cálculo pero con las columnas
-        int colDiff = Math.abs(from.getColumn() - to.getColumn());
-        return (double)(rowDiff + colDiff) * MINUTES_PER_BLOCK;
+        double longitudeDiff = Math.abs(from.getLongitude() - to.getLongitude());
+        return (double)(latitudeDiff + longitudeDiff) * MINUTES_PER_BLOCK;
     }
 
     public double calculateSingleServiceRouteTime(Taxi taxi, ServiceRequest request){

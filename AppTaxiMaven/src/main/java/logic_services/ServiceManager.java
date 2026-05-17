@@ -1,7 +1,7 @@
 package logic_services;
 import java.util.ArrayList;
 import project_models.*;
-import report_view_logic.*;
+import report_services.ReportManager;
 
 /**
  * Core business logic layer.
@@ -116,13 +116,13 @@ public class ServiceManager {
 
     private Taxi findNearestTaxi(ServiceRequest serviceRequest){
         Taxi taxidesignated = null;
-        int minimumDistance = Integer.MAX_VALUE;
+        double minimumDistance = Double.MAX_VALUE;
 
         for (Taxi taxi : this.getTaxis()){
             if (taxi.getStatus() == TaxiStatus.AVAILABLE &&
                     taxi.getType() == serviceRequest.getTaxirequired()){
 
-                int distance = calculateDistanceByManhattan(taxi.getPosition(), serviceRequest.getCustomerPosition());
+                double distance = calculateDistanceByManhattan(taxi.getPosition(), serviceRequest.getCustomerPosition());
 
                 if (distance < minimumDistance){
                     minimumDistance = distance;
@@ -133,8 +133,8 @@ public class ServiceManager {
         return taxidesignated;
     }
 
-    private int calculateDistanceByManhattan(Position taxi, Position service){
-        return Math.abs(taxi.getRow() - service.getRow()) + Math.abs(taxi.getColumn() - service.getColumn());
+    private double calculateDistanceByManhattan(Position taxi, Position service){
+        return Math.abs(taxi.getLatitude() - service.getLatitude()) + Math.abs(taxi.getLongitude() - service.getLongitude());
     }
 
     private void assignTaxiToService(ServiceRequest service, Taxi taxi){

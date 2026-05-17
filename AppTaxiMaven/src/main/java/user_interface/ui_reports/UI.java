@@ -1,10 +1,12 @@
+package user_interface.ui_reports;
+
 import logic_services.ServiceManager;
-import report_view_logic.ReportManager;
-import menu_view_views.LogicMenu;
+import report_services.ReportManager;
 import project_models.*;
+
 import java.util.Scanner;
 
-public class Main {
+public class UI {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -32,7 +34,7 @@ public class Main {
         System.out.println("=== Welcome to the BCN Taxi Management System ===");
 
         while (continuar) {
-            System.out.print(LogicMenu.imprimirOpciones());
+            System.out.print(LogicMenuReports.imprimirOpciones());
 
             try {
                 opcion = Integer.parseInt(sc.nextLine());
