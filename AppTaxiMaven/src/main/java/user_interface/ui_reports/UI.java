@@ -94,7 +94,7 @@ public class UI {
         TaxiType tipus = (tipusIn == 2) ? TaxiType.ADAPTED : TaxiType.STANDARD;
 
         Customer client = new Customer(nom, lastname, 20, dni, "600000000");
-        ServiceRequest peticio = new ServiceRequest((int)(Math.random()*1000), client, new Position(row, col), tipus);
+        ServiceRequest peticio = new ServiceRequest(client, new Position(row, col), tipus);
 
         sm.registeredService(peticio);
     }

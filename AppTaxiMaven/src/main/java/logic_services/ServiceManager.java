@@ -98,6 +98,7 @@ public class ServiceManager {
     // this method registers a taxi using the private methods below
     public void registeredService(ServiceRequest newService){
         if (getActiveServices().size() < maxActive){
+            newService.setServiceCode(designatedId());
             Taxi newtaxi = findNearestTaxi(newService);
 
                 // check if a taxi is available
@@ -114,6 +115,10 @@ public class ServiceManager {
         }
     }
 
+    private int designatedId(){
+        return activeServices.size() + 1;
+    }
+
     private Taxi findNearestTaxi(ServiceRequest serviceRequest){
         Taxi taxidesignated = null;
         double minimumDistance = Double.MAX_VALUE;
@@ -122,7 +127,7 @@ public class ServiceManager {
             if (taxi.getStatus() == TaxiStatus.AVAILABLE &&
                     taxi.getType() == serviceRequest.getTaxirequired()){
 
-                double distance = calculateDistanceByManhattan(taxi.getPosition(), serviceRequest.getCustomerPosition());
+                double distance = calculateDistanceByHaversine(taxi.getPosition(), serviceRequest.getCustomerPosition());
 
                 if (distance < minimumDistance){
                     minimumDistance = distance;
@@ -133,8 +138,23 @@ public class ServiceManager {
         return taxidesignated;
     }
 
-    private double calculateDistanceByManhattan(Position taxi, Position service){
-        return Math.abs(taxi.getLatitude() - service.getLatitude()) + Math.abs(taxi.getLongitude() - service.getLongitude());
+    private double calculateDistanceByHaversine(Position taxi, Position service){
+        final int radioTierraKm = 6371;
+
+        // convert latitude and longitude to radians
+        double latRad1 = Math.toRadians(taxi.getLatitude());
+        double latRad2 = Math.toRadians(service.getLatitude());
+        double deltaLat = Math.toRadians(taxi.getLatitude() - service.getLatitude());
+        double deltaLon = Math.toRadians(taxi.getLongitude() - service.getLongitude());
+
+        // apply haversine
+        double a = Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2) +
+                    Math.cos(latRad1) * Math.cos(latRad2) *
+                    Math.sin(deltaLon / 2) * Math.sin(deltaLon / 2);
+
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        return radioTierraKm * c;
     }
 
     private void assignTaxiToService(ServiceRequest service, Taxi taxi){

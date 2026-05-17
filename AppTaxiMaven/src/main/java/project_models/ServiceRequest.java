@@ -15,8 +15,8 @@ public class ServiceRequest {
     private LocalTime requestTime;
     private TaxiType taxirequired;
 
-    public ServiceRequest(int serviceCode, Customer customer, Position customerPosition, TaxiType taxirequired) {
-        this.serviceCode = serviceCode;
+    public ServiceRequest(Customer customer, Position customerPosition, TaxiType taxirequired) {
+        this.serviceCode = 0;
         this.customer = customer;
         this.customerPosition = customerPosition;
         this.serviceStatus = ServiceStatus.PENDING; // always starts as pending
