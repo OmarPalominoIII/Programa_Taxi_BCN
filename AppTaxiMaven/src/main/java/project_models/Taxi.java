@@ -1,11 +1,13 @@
 package project_models;
 
 
+import java.util.Objects;
+
 /**
  * Represents a taxi vehicle with its driver, position, type, and current status.
  */
 public class Taxi {
-
+    private int idTaxi;
     private String licensePlate;
     private String color;
     private int capacity;
@@ -16,6 +18,7 @@ public class Taxi {
 
     public Taxi(String licensePlate, String color, int capacity,
                 Driver driver, Position position, TaxiType type) {
+        this.idTaxi = 0;
         this.licensePlate = licensePlate;
         this.color = color;
         this.capacity = capacity;
@@ -26,6 +29,7 @@ public class Taxi {
     }
 
     // Getters
+    public int getIdTaxi() {return idTaxi;}
     public String getLicensePlate() { return licensePlate; }
     public String getColor()        { return color; }
     public int getCapacity()        { return capacity; }
@@ -35,6 +39,8 @@ public class Taxi {
     public TaxiStatus getStatus()   { return status; }
 
     // Setters
+
+    public void setIdTaxi(int idTaxi) {this.idTaxi = idTaxi;}
     public void setLicensePlate(String licensePlate) { this.licensePlate = licensePlate; }
     public void setColor(String color)               { this.color = color; }
     public void setCapacity(int capacity)            { this.capacity = capacity; }
@@ -45,8 +51,20 @@ public class Taxi {
 
     @Override
     public String toString() {
-        return "Taxi{licensePlate='" + licensePlate + "', color='" + color +
+        return "Taxi | ID Taxi:" + idTaxi + "licensePlate='" + licensePlate + "', color='" + color +
                "', capacity=" + capacity + ", type=" + type +
                ", status=" + status + ", position=" + position + "}";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Taxi taxi = (Taxi) o;
+        return Objects.equals(licensePlate, taxi.licensePlate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(licensePlate);
     }
 }

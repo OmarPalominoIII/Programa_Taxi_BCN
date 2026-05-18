@@ -1,5 +1,5 @@
 package project_models;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 /**
  * Represents a taxi service request made by a customer.
@@ -12,15 +12,27 @@ public class ServiceRequest {
     private Position customerPosition; // pickup location
     private ServiceStatus serviceStatus;
     private Taxi taxi;
-    private LocalTime requestTime;
+    private LocalDateTime requestTime;
     private TaxiType taxirequired;
+
+    @Override
+    public String toString() {
+        return "Service ID: " + serviceCode +
+                ", Customer: " + customer.getFirstName() + " " + customer.getLastName() +
+                ", Taxi ID: " + taxi.getIdTaxi() +
+                ", Datetime: " + requestTime +
+                ", Coordenates: " + customerPosition.getLatitude() + " " + customerPosition.getLongitude() +
+                ", Service status: " + serviceStatus +
+                ", taxirequired=" + taxirequired +
+                '}';
+    }
 
     public ServiceRequest(Customer customer, Position customerPosition, TaxiType taxirequired) {
         this.serviceCode = 0;
         this.customer = customer;
         this.customerPosition = customerPosition;
         this.serviceStatus = ServiceStatus.PENDING; // always starts as pending
-        this.requestTime = LocalTime.now();
+        this.requestTime = LocalDateTime.now();
         this.taxi = null;
         this.taxirequired = taxirequired;
     }
@@ -31,7 +43,7 @@ public class ServiceRequest {
     public Position getCustomerPosition()    { return customerPosition; }
     public ServiceStatus getServiceStatus()  { return serviceStatus; }
     public Taxi getTaxi()                    { return taxi; }
-    public LocalTime getRequestTime()        { return requestTime; }
+    public LocalDateTime getRequestTime()        { return requestTime; }
     public TaxiType getTaxirequired()        {return taxirequired; }
 
     // Setters
@@ -40,13 +52,7 @@ public class ServiceRequest {
     public void setCustomerPosition(Position customerPosition){ this.customerPosition = customerPosition; }
     public void setServiceStatus(ServiceStatus serviceStatus){ this.serviceStatus = serviceStatus; }
     public void setTaxi(Taxi taxi)                           { this.taxi = taxi; }
-    public void setRequestTime(LocalTime requestTime)        { this.requestTime = requestTime; }
+    public void setRequestTime(LocalDateTime requestTime)        { this.requestTime = requestTime; }
     public void setTaxirequired(TaxiType taxirequired)       { this.taxirequired = taxirequired; }
 
-    @Override
-    public String toString() {
-        return "ID: " + serviceCode +
-               ", Customer: " + customer.getFirstName() + " " + customer.getLastName() +
-               ", Status: " + serviceStatus;
-    }
 }
