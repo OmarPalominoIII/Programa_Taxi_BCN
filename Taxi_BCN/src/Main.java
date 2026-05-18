@@ -1,7 +1,9 @@
+import database.DatabaseManager;
 import logic_services.ServiceManager;
 import report_view_logic.ReportManager;
 import menu_view_views.LogicMenu;
 import project_models.*;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Main {
@@ -9,11 +11,21 @@ public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
+        // ── Base de datos ─────────────────────────────────
+        DatabaseManager db = new DatabaseManager();
+        try {
+            db.conectar();
+            db.crearTablas();
+        } catch (SQLException e) {
+            System.err.println("[DB] Error al iniciar la base de datos: " + e.getMessage());
+        }
+        // ─────────────────────────────────────────────────
+
         ReportManager reportManager = new ReportManager();
         ConsoleMessenger messenger = new ConsoleMessenger();
         ServiceManager serviceManager = new ServiceManager(reportManager, messenger);
 
-        precarregarFlota(serviceManager);
+        precarregarFlota(serviceManager, db);
 
         System.out.println("\n\n");
         System.out.println("╔==================================================╗");
@@ -38,12 +50,13 @@ public class Main {
                 opcion = Integer.parseInt(sc.nextLine());
 
                 switch (opcion) {
-                    case 1 -> registrarNouServei(serviceManager, sc);
+                    case 1 -> registrarNouServei(serviceManager, sc, db);
                     case 2 -> gestionarArribadaTaxi(serviceManager, sc);
                     case 3 -> finalitzarServeiActiu(serviceManager, sc);
                     case 4 -> mostrarEstatSistema(serviceManager, reportManager);
                     case 5 -> {
                         System.out.println("Leaving the system... Have a nice trip!");
+                        db.desconectar();
                         continuar = false;
                     }
                     default -> System.out.println("Invalid option, choose from 1 to 5");
@@ -57,26 +70,30 @@ public class Main {
         }
     }
 
-    /**
-     * Mètode per omplir el sistema amb dades inicials i poder fer proves ràpides.
-     */
-    private static void precarregarFlota(ServiceManager sm) {
+    private static void precarregarFlota(ServiceManager sm, DatabaseManager db) {
         Driver conductor1 = new Driver("Mario", "DAM", 18, "12345678X", "TX-999");
         Driver conductor2 = new Driver("Luigi", "ASIX", 58, "77777777A", "TX-999");
 
         Taxi t1 = new Taxi("B-1234-BCN", "Negre/Groc", 4, conductor1, new Position(0, 0), TaxiType.STANDARD);
-
         Taxi t2 = new Taxi("B-5555-APP", "Negre/Groc", 6, conductor2, new Position(5, 5), TaxiType.ADAPTED);
 
         sm.getTaxis().add(t1);
         sm.getTaxis().add(t2);
+
+        try {
+            db.insertarTaxi(t1);
+            db.insertarTaxi(t2);
+        } catch (Exception e) {
+            System.err.println("[DB] Error al guardar la flota: " + e.getMessage());
+        }
+
         System.out.println("[INFO] Fleet initialized with 2 vehicles (Lenovo ThinkCentre Server OK)");
     }
 
     /**
      * Captura les dades del client i la posició per crear una sol·licitud
      */
-    private static void registrarNouServei(ServiceManager sm, Scanner sc) {
+    private static void registrarNouServei(ServiceManager sm, Scanner sc, DatabaseManager db) {
         System.out.println("\n--- New Service Registration ---");
         String nom = campoObligatorio(sc, "Name: ");
         String lastname = campoObligatorio(sc, "Lastname: ");
@@ -95,6 +112,12 @@ public class Main {
         ServiceRequest peticio = new ServiceRequest((int)(Math.random()*1000), client, new Position(row, col), tipus);
 
         sm.registeredService(peticio);
+
+        try {
+            db.insertarServicio(peticio);
+        } catch (Exception e) {
+            System.err.println("[DB] Error al guardar el servicio: " + e.getMessage());
+        }
     }
 
     private static void finalitzarServeiActiu(ServiceManager sm, Scanner sc) {
