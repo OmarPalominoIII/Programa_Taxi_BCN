@@ -1,6 +1,5 @@
 package project_models;
 
-import java.sql.Driver;
 
 /**
  * Represents a taxi vehicle with its driver, position, type, and current status.
