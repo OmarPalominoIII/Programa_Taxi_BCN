@@ -1,4 +1,4 @@
-package project_models;
+package models;
 
 public class Customer extends Person {
     private int idCustomer;
@@ -18,11 +18,13 @@ public class Customer extends Person {
         this.phoneNumber = phoneNumber;
     }
 
+    public Customer(){}
+
     public String getPhoneNumber()                 { return phoneNumber; }
     public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
 
     @Override
     public String toString() {
-        return "Customer | Id customer:" + idCustomer + super.toString() + ", phoneNumber='" + phoneNumber + "'}";
+        return "Id customer:" + idCustomer + super.toString() + ", Phone: " + phoneNumber;
     }
 }

@@ -1,4 +1,4 @@
-package project_models;
+package models;
 
 /**
  taxi driver. Extends Person.
@@ -21,11 +21,13 @@ public class Driver extends Person {
         this.idDriver = 0;
     }
 
+    public Driver(){}
+
     public String getTaxiLicense()                { return taxiLicense; }
     public void setTaxiLicense(String taxiLicense){ this.taxiLicense = taxiLicense; }
 
     @Override
     public String toString() {
-        return "Driver | ID Driver: " + idDriver + super.toString() + ", Driver license: " + taxiLicense;
+        return "ID Driver: " + idDriver + super.toString() + ", Driver license: " + taxiLicense;
     }
 }

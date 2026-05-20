@@ -1,4 +1,4 @@
-package project_models;
+package models;
 
 public enum TaxiType {
         STANDARD,

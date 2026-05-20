@@ -1,4 +1,4 @@
-package project_models;
+package models;
 
 public class Position {
     private double latitude;
@@ -9,14 +9,16 @@ public class Position {
         this.longitude = longitude;
     }
 
+    public Position(){}
+
     public double getLatitude()       { return latitude; }
     public double getLongitude()    { return longitude; }
 
-    public void setRow(double latitude)       { this.latitude = latitude; }
-    public void setColumn(double longitude) { this.longitude = longitude; }
+    public void setLatitude(double latitude)       { this.latitude = latitude; }
+    public void setLongitude(double longitude) { this.longitude = longitude; }
 
     @Override
     public String toString() {
-        return "Position | Latitude: " + latitude + ", Longitude: " + longitude;
+        return "Latitude: " + latitude + ", Longitude: " + longitude;
     }
 }

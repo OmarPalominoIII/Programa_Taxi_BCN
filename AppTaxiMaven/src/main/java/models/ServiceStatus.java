@@ -1,4 +1,4 @@
-package project_models;
+package models;
 
 /**
  * Lifecycle states of a service request.
