@@ -1,4 +1,4 @@
-package project_models;
+package models;
 
 
 import java.util.Objects;
@@ -28,6 +28,8 @@ public class Taxi {
         this.status = TaxiStatus.AVAILABLE; // default state on creation
     }
 
+    public Taxi(){}
+
     // Getters
     public int getIdTaxi() {return idTaxi;}
     public String getLicensePlate() { return licensePlate; }
@@ -51,9 +53,9 @@ public class Taxi {
 
     @Override
     public String toString() {
-        return "Taxi | ID Taxi:" + idTaxi + "licensePlate='" + licensePlate + "', color='" + color +
-               "', capacity=" + capacity + ", type=" + type +
-               ", status=" + status + ", position=" + position + "}";
+        return "ID Taxi:" + idTaxi + "License plate='" + licensePlate + ", Color: " + color +
+               "', Capacity: " + capacity + ", Type=" + type +
+               ", Status: " + status + ", Position: " + position;
     }
 
     @Override

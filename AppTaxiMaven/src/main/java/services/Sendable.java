@@ -1,4 +1,4 @@
-package project_models;
+package services;
 
 public interface Sendable {
     void sendMessage(String message);

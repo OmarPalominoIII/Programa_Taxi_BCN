@@ -1,4 +1,4 @@
-package project_models;
+package models;
 import java.time.LocalDateTime;
 
 /**
@@ -18,13 +18,12 @@ public class ServiceRequest {
     @Override
     public String toString() {
         return "Service ID: " + serviceCode +
-                ", Customer: " + customer.getFirstName() + " " + customer.getLastName() +
-                ", Taxi ID: " + taxi.getIdTaxi() +
+                ", Customer: " + (customer != null ? (customer.getFirstName() + " " + customer.getLastName()) : "NO CUSTOMER") +
+                ", Taxi ID: " + (taxi != null ? taxi.getIdTaxi() : "NONE (Waiting for assignment)") +
                 ", Datetime: " + requestTime +
-                ", Coordenates: " + customerPosition.getLatitude() + " " + customerPosition.getLongitude() +
+                ", Coordinates: " + (customerPosition != null ? (customerPosition.getLatitude() + " " + customerPosition.getLongitude()) : "0.0 0.0") +
                 ", Service status: " + serviceStatus +
-                ", taxirequired=" + taxirequired +
-                '}';
+                ", Taxi Required: " + taxirequired;
     }
 
     public ServiceRequest(Customer customer, Position customerPosition, TaxiType taxirequired) {
@@ -36,6 +35,8 @@ public class ServiceRequest {
         this.taxi = null;
         this.taxirequired = taxirequired;
     }
+
+    public ServiceRequest(){}
 
     // Getters
     public int getServiceCode()              { return serviceCode; }

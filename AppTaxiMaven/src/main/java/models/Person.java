@@ -1,4 +1,4 @@
-package project_models;
+package models;
 
 public abstract class Person {
 
@@ -14,6 +14,8 @@ public abstract class Person {
         this.nationalId = nationalId;
     }
 
+    public Person(){}
+
     // Getters
     public String getFirstName()   { return firstName; }
     public String getLastName()    { return lastName; }
@@ -28,7 +30,7 @@ public abstract class Person {
 
     @Override
     public String toString() {
-        return "Person{firstName='" + firstName + "', lastName='" + lastName +
-               "', age=" + age + ", nationalId='" + nationalId + "'}";
+        return "Firstname: " + firstName + ", LastName: " + lastName +
+               ", Age: " + age + ", DNI: " + nationalId;
     }
 }
