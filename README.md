@@ -16,6 +16,15 @@ Plataforma completa de software desarrollada para TaxiBcn con el fin de optimiza
 - **2. Patrón Observer:** Se diseñó la interfaz Sendable para evitar acoplar la lógica con impresiones directas en consola, facilitando la transición limpia hacia la interfaz gráfica.
 - **3. Estructuras de datos eficientes:** Uso intensivo de ArrayList dinámicos para manejar listas de espera y servicios activos, combinados con enums para garantizar la consistencia de los estados del sistema.
 
+## 4 Gestión de estado
+### Estado del servicio:
+- **PENDING:** Al registrar una nueva petición
+- **IN_PROGRESS:** Al asignarle un vehículo
+- **COMPLETED:** Al finalizar el trayecto (Enviado a ReportManager para métricas y tiempos reales).
+### Estado del taxi:
+- **AVAILABLE:** Estado inicial o al finalizar un servicio.
+- **BUSY:** Al vincularte una solicitud activa.
+
 ## 5 Stack tecnológico
 - **Lenguaje:** Java
 - **Base de datos:** SQLite
@@ -23,11 +32,3 @@ Plataforma completa de software desarrollada para TaxiBcn con el fin de optimiza
 - **Cálculo de distancias:** Fórmula Haversine
 - **Interfaz gráfica:** Java Swing
 - **Control de versiones:** Git y Github
-## 4 Gestión de estado
-    ### Estado del servicio:
-        - **PENDING:** Al registrar una nueva petición
-        - **IN_PROGRESS:** Al asignarle un vehículo
-        - **COMPLETED:** Al finalizar el trayecto (Enviado a ReportManager para métricas y tiempos reales).
-    ### Estado del taxi
-        - **AVAILABLE:** Estado inicial o al finalizar un servicio.
-        - **BUSY:** Al vincularte una solicitud activa.
